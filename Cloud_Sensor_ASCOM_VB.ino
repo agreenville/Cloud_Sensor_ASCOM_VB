@@ -57,7 +57,7 @@ void loop() {
 avg_delta_celsius=movingAverageFilter.process(delta_celsius); //calc moving ave
 
 //condition for is_safe
- if (avg_delta_celsius >= 16*100) //should be <. less than 1600 or 16C is clear. try 16-21C difference
+ if (avg_delta_celsius <= 16*100) //should be <. less than 1600 or 16C is clear. try 16-21C difference
 {
   csSafe=false;
   //Serial.print("not safe");
