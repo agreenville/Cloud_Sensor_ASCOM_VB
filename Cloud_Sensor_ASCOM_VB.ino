@@ -21,13 +21,13 @@ bool skytmpB=false; //for bluetooth serial
 //Cloud Sensor Setup
 char st1[30];
 long int tpl; //Cloud sensor variable
-long int CS_ObjTemp; //long int
-long int CS_AmbTemp; //long int
-float CS_ObjTempF; 
+long int CS_ObjTemp; //long int sky temp
+long int CS_AmbTemp; //long int sensor temp
+float CS_ObjTempF; //float
 float CS_AmbTempF; 
 
 long int Iram;
-long int totemp;
+long int totemp; //amb temp
 float totempF;
 int photocellPin0 = 0;     // the cell and 10K pulldown are connected to a0
 int photocellReading0;     // the analog reading from the analog resistor divider
@@ -52,7 +52,7 @@ void loop() {
  CloudGetTempFun();
  
 //calc amb and sky temp difference
- delta_celsius = abs(CS_AmbTempF-CS_ObjTempF);
+ delta_celsius = abs(CS_AmbTempF-totempF);
   
 avg_delta_celsius=movingAverageFilter.process(delta_celsius); //calc moving ave
 
@@ -83,12 +83,12 @@ else if (cmd=="dc"){					//return delta C to serial port. For debugging and poss
    Serial.println(avg_delta_celsius);	
 }
 else if (cmd=="amb"){					//return amb temp C to serial port. For debugging and possible ascom enviro. implementation
-  Serial.println(CS_AmbTempF/100);
-  //Serial.println("#");
+  Serial.print(totempF/100);
+  Serial.println("#");
 }
 else if (cmd=="skyT"){					//return sky temp to serial port. For debugging and possible ascom enviro. implementation
-  Serial.println(CS_ObjTempF/100);
-  //Serial.print("#");
+  Serial.print(CS_ObjTempF/100);
+ Serial.println("#");
    
 }
 else if (cmd=="skyend"){				//command sent from android bluetooth app to stop temp data being written to serial port
@@ -119,8 +119,8 @@ else if (cmd=="dc"){
    Serial_blue.println(avg_delta_celsius);	
 }
 else if (cmd=="amb"){
-  Serial_blue.println(CS_AmbTempF/100);
-  //Serial.println("#");
+  Serial_blue.print(totempF/100);
+  Serial.println("#");
 }
 else if (cmd=="skyT"){
   Serial_blue.println(CS_ObjTempF/100);
@@ -255,12 +255,12 @@ void getSafeB()								//respond to ASCOM with Safety State
    Serial.print("*E");
    Serial.print(avg_delta_celsius/100); 
    Serial.print(",");
-   Serial.print(CS_AmbTempF/100);
+  Serial.print(totempF/100); //amb temp
    Serial.print(",");
    Serial.print(CS_ObjTempF/100);
    Serial.print(",");
-   Serial.print(totempF/100);
-  Serial.print("*");
+   Serial.print(CS_AmbTempF/100); //sensor temp
+   Serial.print("*");
   // Serial.print("\n");
  }
 
@@ -270,11 +270,11 @@ void getSafeB()								//respond to ASCOM with Safety State
    Serial_blue.print("*E");
    Serial_blue.print(avg_delta_celsius/100); 
    Serial_blue.print(",");
-   Serial_blue.print(CS_AmbTempF/100);
+   Serial_blue.print(totempF/100);
    Serial_blue.print(",");
    Serial_blue.print(CS_ObjTempF/100);
    Serial_blue.print(",");
-   Serial_blue.print(totempF/100);
+   Serial_blue.print(CS_AmbTempF/100);
   Serial_blue.print("*");
   // Serial.print("\n");
  }
