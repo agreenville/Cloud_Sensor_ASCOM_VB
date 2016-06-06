@@ -120,11 +120,11 @@ else if (cmd=="dc"){
 }
 else if (cmd=="amb"){
   Serial_blue.print(totempF/100);
-  Serial.println("#");
+  Serial_blue.println("#");
 }
 else if (cmd=="skyT"){
-  Serial_blue.println(CS_ObjTempF/100);
-  //Serial.print("#");
+  Serial_blue.print(CS_ObjTempF/100);
+  Serial_blue.println("#");
    
 }
 else if (cmd=="skyend"){
