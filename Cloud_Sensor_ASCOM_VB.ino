@@ -52,7 +52,7 @@ void loop() {
  CloudGetTempFun();
  
 //calc amb and sky temp difference
- delta_celsius = abs(CS_AmbTempF-totempF);
+ delta_celsius = abs(CS_ObjTempF-totempF);
   
 avg_delta_celsius=movingAverageFilter.process(delta_celsius); //calc moving ave
 
@@ -80,7 +80,7 @@ else if (cmd == "CONNECT"){
        connect();       				//ASCOM checking to see if connected and run connect function
 }
 else if (cmd=="dc"){					//return delta C to serial port. For debugging and possible ascom enviro. implementation
-   Serial.println(avg_delta_celsius);	
+   Serial.println(avg_delta_celsius/100);	
 }
 else if (cmd=="amb"){					//return amb temp C to serial port. For debugging and possible ascom enviro. implementation
   Serial.print(totempF/100);
@@ -116,7 +116,7 @@ else if (cmd == "CONNECT"){
        connectB();       		
 }
 else if (cmd=="dc"){
-   Serial_blue.println(avg_delta_celsius);	
+   Serial_blue.println(avg_delta_celsius/100);	
 }
 else if (cmd=="amb"){
   Serial_blue.print(totempF/100);
